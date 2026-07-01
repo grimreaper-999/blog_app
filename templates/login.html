@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHIVE — Sign In</title>
+    <!-- Google Fonts for Editorial Aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0d0d0f; /* Ultra deep charcoal slate */
+            --card-bg: #131316;
+            --border-color: #1e1e24;
+            --text-primary: #e2e2e9;
+            --text-secondary: #8e8e99;
+            --accent: #b29a73; /* Sophisticated muted gold */
+            --accent-purple: #8e7cc3; /* Muted purple accent matching the reference image */
+            
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-logo: 'Cinzel', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Global Desktop Navbar --- */
+        header {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 32px 24px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .nav-logo {
+            font-family: var(--font-logo);
+            font-size: 1.4rem;
+            letter-spacing: 0.25em;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-link {
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .btn-signup {
+            border: 1px solid var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-signup:hover {
+            border-color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- Split Layout Portal Content --- */
+        .portal-wrapper {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            height: 100vh;
+            width: 100%;
+            padding-top: 100px; /* Accounts for absolute header */
+        }
+
+        /* Left Side: Form Framework */
+        .portal-form-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 60px;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-header {
+            margin-bottom: 32px;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent-purple);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-title {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            font-weight: 400;
+            color: #fff;
+            letter-spacing: -0.01em;
+        }
+
+        /* Interactive Inputs */
+        .input-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            color: #fff;
+            border-radius: 4px;
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 1px rgba(142, 124, 195, 0.2);
+        }
+
+        .input-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: -8px;
+            margin-bottom: 32px;
+            font-size: 0.8rem;
+        }
+
+        .forgot-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .forgot-link:hover {
+            color: var(--accent);
+        }
+
+        /* Action Buttons */
+        .submit-btn {
+            width: 100%;
+            background-color: #fff;
+            color: var(--bg-color);
+            border: none;
+            padding: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 24px;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--text-secondary);
+        }
+
+        /* Bottom Redirect Area */
+        .redirect-prompt {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .redirect-prompt a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 2px;
+            transition: border-color 0.2s;
+        }
+
+        .redirect-prompt a:hover {
+            border-color: var(--accent-purple);
+        }
+
+
+        /* Right Side: Atmospheric Dark Panel */
+        .portal-visual-panel {
+            background: linear-gradient(135deg, #13131a 0%, #060608 100%);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Replicating the distinct soft purple ambient glow from your reference screenshot layout */
+        .ambient-glow {
+            width: 300px;
+            height: 400px;
+            background: var(--accent-purple);
+            filter: blur(140px);
+            opacity: 0.15;
+            position: absolute;
+            top: 20%;
+            right: -10%;
+            pointer-events: none;
+        }
+
+        .panel-quote {
+            position: relative;
+            z-index: 2;
+            max-width: 360px;
+        }
+
+        .panel-quote p {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-style: italic;
+            line-height: 1.4;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .panel-quote span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+        }
+
+        /* --- Responsive Viewports --- */
+        @media (max-width: 900px) {
+            .portal-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .portal-visual-panel {
+                display: none; /* Hide art asset block completely on clean mobile screens */
+            }
+            .portal-form-container {
+                padding: 40px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation Map -->
+    <header>
+        <a href="/" class="nav-logo">ARCHIVE</a>
+        <div class="nav-actions">
+            <a href="signup" class="nav-link btn-signup">Sign Up</a>
+        </div>
+    </header>
+
+    <!-- Split Content Portal Wrapper -->
+    <div class="portal-wrapper">
+        
+        <!-- Left Column: Authentication Form Block -->
+        <main class="portal-form-container">
+            <div class="form-card">
+                
+                <div class="form-header">
+                    <span class="section-label">Welcome Back</span>
+                    <h1 class="form-title">Enter the Archive</h1>
+                </div>
+            {% if messages%}
+            <div class="messages-container" style="margin-bottom: 15px;">
+                {% for message in messages%}
+                <div class="alert alert-{{ message.tags }}" style="padding: 12px; border-radius: 4px; color: #fe0a0a; font-family: sans-serif; background-color: var(--bg-color, #3498db);">
+                    {{message}}
+
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+                <form method="post" action="{% url 'login'%}">
+                    {% csrf_token %}
+                    <!-- Email field -->
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="name@domain.com" required autocomplete="email">
+                    </div>
+
+                    <!-- Password field -->
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+
+                    <!-- Options utilities segment -->
+                    <div class="input-meta">
+                        <a href="#forgot" class="forgot-link">Forgot password?</a>
+                    </div>
+
+                    <!-- Form submission execution button -->
+                    <button type="submit" class="submit-btn">Sign In</button>
+                </form>
+
+                <!-- Navigation link to switch context to Signup -->
+                <div class="redirect-prompt">
+                    Don't have an account? <a href="signup">Create one here</a>.
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Right Column: Environmental Visual panel context -->
+        <section class="portal-visual-panel">
+            <div class="ambient-glow"></div>
+            
+            <div class="panel-quote">
+                <p>"Depth requires a deliberate retreat from the noise of distribution."</p>
+                <span>The Collective — Vol. I</span>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>

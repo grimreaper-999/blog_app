@@ -1,0 +1,13 @@
+# Python bytecode (the pycache folders)
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+env/
+
+# SQLite local database
+db.sqlite3
+
+# Operating system files
+.DS_Store

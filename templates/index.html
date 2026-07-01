@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obsidian Editorial - Desktop Sanctuary</title>
+    <!-- Google Fonts for Editorial Aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0d0d0f; /* Ultra deep charcoal slate */
+            --card-bg: #131316;
+            --border-color: #1e1e24;
+            --text-primary: #e2e2e9;
+            --text-secondary: #8e8e99;
+            --accent: #b29a73; /* Sophisticated muted gold */
+            --accent-purple: #8e7cc3; /* Muted purple accent matching the reference image */
+            
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-logo: 'Cinzel', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Standardized Desktop Header --- */
+        header {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 32px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-logo {
+            font-family: var(--font-logo);
+            font-size: 1.4rem;
+            letter-spacing: 0.25em;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-link {
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .btn-signup {
+            border: 1px solid var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-signup:hover {
+            border-color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- Main Layout Grid --- */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 80px 24px;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        /* --- "Featured For You" Desktop Row --- */
+        .featured-section {
+            margin: 60px 0;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            padding: 40px;
+        }
+
+        /* Ambient Image Container simulating the render */
+        .featured-visual {
+            background: linear-gradient(135deg, #1f1f2e 0%, #0d0d11 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Simulated glowing purple element from the reference image */
+        .visual-glow {
+            width: 60px;
+            height: 90px;
+            background: var(--accent-purple);
+            filter: blur(40px);
+            opacity: 0.5;
+            position: absolute;
+        }
+
+        .featured-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .user-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #2a2a35;
+            border: 1px solid var(--border-color);
+        }
+
+        .username {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .card-title {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            line-height: 1.25;
+            font-weight: 400;
+            color: #fff;
+            margin: 24px 0 16px 0;
+        }
+
+        .card-excerpt {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 32px;
+            max-width: 90%;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .progress-bar-bg {
+            flex-grow: 1;
+            height: 2px;
+            background-color: #22222a;
+            margin-right: 16px;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 45%; /* Match dynamic simulated value */
+            background-color: var(--accent);
+        }
+
+        /* --- Split "About" Section (The Collective) --- */
+        .about-section {
+            margin: 80px 0;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+        }
+
+        .about-title {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #fff;
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 24px;
+            max-width: 800px;
+        }
+
+        .btn-manifesto {
+            display: inline-block;
+            background-color: var(--accent-purple);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .btn-manifesto:hover {
+            opacity: 0.9;
+        }
+
+        /* --- Balanced Horizontal Newsletter Row --- */
+        .newsletter-section {
+            margin-top: 80px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 48px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .newsletter-heading h3 {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: #fff;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .newsletter-heading p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 16px;
+        }
+
+        .email-input {
+            flex-grow: 1;
+            background-color: #1a1a22;
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            color: #fff;
+            border-radius: 4px;
+            font-family: var(--font-sans);
+            outline: none;
+        }
+
+        .email-input:focus {
+            border-color: var(--accent-purple);
+        }
+
+        .submit-btn {
+            background-color: #fff;
+            color: var(--bg-color);
+            border: none;
+            padding: 0 32px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--text-secondary);
+        }
+
+        /* Responsive breakdown for smaller windows */
+        @media (max-width: 900px) {
+            .featured-grid, .about-section, .newsletter-section {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .about-text p { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Updated Desktop Navbar -->
+    <header>
+        <a href="" class="nav-logo">ARCHIVE</a>
+        <div class="nav-actions">
+            <a href="login" class="nav-link">Login</a>
+            <a href="signup" class="nav-link btn-signup">Sign Up</a>
+        </div>
+    </header>
+
+    <!-- Main Content Grid Canvas -->
+    <main>
+        
+        <!-- Featured Canvas Section -->
+        <section class="featured-section">
+            <span class="section-label">Featured for You</span>
+            <div class="featured-grid">
+                
+                <!-- Left Visual Asset Mock -->
+                <div class="featured-visual">
+                    <div class="visual-glow"></div>
+                </div>
+
+                <!-- Right Editorial Metadata -->
+                <div class="featured-content">
+                    <div class="user-meta">
+                        <div class="user-profile">
+                            <div class="avatar"></div>
+                            <span class="username">Studio Profile</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="card-title">The Silence of Stone: Brutalist Legacies in Modern Design</h2>
+                        <p class="card-excerpt">Exploring how raw textures and unapologetic geometry continue to shape the sensory experience of contemporary urban sanctuaries.</p>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                        <span>45% READ</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Split Manifesto / About Row -->
+        <section class="about-section">
+            <div class="about-heading">
+                <span class="section-label">Manifesto</span>
+                <h3 class="about-title">The Collective</h3>
+            </div>
+            <div class="about-text">
+                <p>ARCHIVE is more than an editorial platform; it is a digital sanctuary for those who value depth over velocity. Our mission is to preserve the cadence of long-form thought in an age of fragmented attention.</p>
+                <p>We create essays from the intersections of design, philosophy, and technology to build a living archive of contemporary culture. Every piece is an invitation to slow down, look closer, and engage with the substance of the world.</p>
+                <a href="#manifesto" class="btn-manifesto">Read Our Story</a>
+            </div>
+        </section>
+
+        <!-- Horizontal Newsletter Row Container -->
+        <section class="newsletter-section">
+            <div class="newsletter-heading">
+                <h3>Join the Newsletter</h3>
+                <p>Weekly dispatches on culture, curated directly for the observant mind.</p>
+            </div>
+            <form class="newsletter-form" onsubmit="event.preventDefault();">
+                <input type="email" class="email-input" placeholder="Email Address" required>
+                <button type="submit" class="submit-btn">Subscribe</button>
+            </form>
+        </section>
+
+    </main>
+
+</body>
+</html>
