@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Story — Obsidian Editorial</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --surface-color: #1a1a1a;
+            --border-color: #2c2c2c;
+            --text-primary: #e5e5e5;
+            --text-secondary: #a0a0a0;
+            --accent-color: #ffffff;
+            --font-serif: "Georgia", "Times New Roman", serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        /* Navigation Minimal Header */
+        .editor-header {
+            max-width: 740px;
+            margin: 0 auto 3rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .brand {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .btn-cancel {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .btn-cancel:hover {
+            color: var(--text-primary);
+        }
+
+        .btn-publish {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-publish:hover {
+            opacity: 0.9;
+        }
+
+        /* Editor Workspace */
+        .editor-container {
+            max-width: 740px;
+            margin: 0 auto;
+        }
+
+        /* Django Message Alerts */
+        .messages {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            background-color: #2a2215;
+            border: 1px solid #ff9800;
+            color: #ffe0b2;
+        }
+
+        /* Form Styling */
+        .editor-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .title-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 400;
+            outline: none;
+            line-height: 1.2;
+        }
+
+        .title-input::placeholder {
+            color: #3a3a3a;
+        }
+
+        .meta-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+            outline: none;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .meta-input::placeholder {
+            color: #4a4a4a;
+        }
+
+        .content-input {
+            width: 100%;
+            min-height: 400px;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            line-height: 1.8;
+            outline: none;
+            resize: vertical;
+        }
+
+        .content-input::placeholder {
+            color: #3a3a3a;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Minimal Bar -->
+    <header class="editor-header">
+        <a href="#" class="brand">Obsidian.</a>
+        <div class="actions">
+            <a href="#" class="btn-cancel">Cancel</a>
+            <!-- Tied the submit button to the form via the form attribute -->
+            <button type="submit" form="post-form" class="btn-publish">Publish</button>
+        </div>
+    </header>
+
+    <main class="editor-container">
+        <!-- Django Messages Block -->
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="message {{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Writing Canvas -->
+        <form id="post-form" method="POST" action="" class="editor-form">
+            {% csrf_token %}
+            
+            <!-- Title -->
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    name="title" 
+                    value="{{blog.title}}"
+                    class="title-input" 
+                    placeholder="Title" 
+                    required 
+                    autocomplete="off">
+            </div>
+
+            <!-- Subtitle / Short Excerpt -->
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    name="excerpt" 
+                    value="{{blog.subtitle}}"
+                    class="meta-input" 
+                    placeholder="An elegant subtitle or brief summary..." 
+                    autocomplete="off">
+            </div>
+
+            <!-- Body Content -->
+            <div class="input-group">
+                <textarea 
+                    name="content" 
+                    class="content-input" 
+                    placeholder="Tell your story..." 
+                    required>{{blog.content}}</textarea>
+            </div>
+        </form>
+    </main>
+
+</body>
+</html>

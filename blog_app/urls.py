@@ -20,5 +20,9 @@ from app import views as private_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('home.urls')),
-    path('home/',private_views.home,name="home_page")
+    path('home/',private_views.home,name="home_page"),
+    path('home/create',private_views.create,name='create'),
+    path('home/profile',private_views.dashboard,name='profile'),
+    path('home/edit/<int:pk>',private_views.edit_post,name="edit_post"),
+    path('home/delet/<int:pk>',private_views.delete_blog,name='delete_blog'),
 ]

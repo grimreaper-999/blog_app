@@ -350,7 +350,7 @@
             
             <div class="nav-user-actions">
                 <!-- Create Entry Action Interface -->
-                <a href="#create-blog" class="btn-create-post">
+                <a href="{% url 'create'  %}" class="btn-create-post">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -359,7 +359,7 @@
                 </a>
                 
                 <!-- Explicit User Context Trigger -->
-                <a href="#profile-settings" class="profile-trigger" title="Account Settings">
+                <a href="profile" class="profile-trigger" title="Account Settings">
                     <div class="nav-avatar"></div>
                     <span class="nav-username">{{request.user.username}}</span>
                 </a>

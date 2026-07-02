@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ request.user.username }} — Obsidian Editorial</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --surface-color: #1a1a1a;
+            --border-color: #2c2c2c;
+            --text-primary: #e5e5e5;
+            --text-secondary: #a0a0a0;
+            --accent-color: #ffffff;
+            --font-serif: "Georgia", "Times New Roman", serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        /* Minimal Header */
+        .nav-header {
+            max-width: 740px;
+            margin: 0 auto 4rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .brand {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .btn-new-story {
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .btn-new-story:hover {
+            border-color: var(--accent-color);
+        }
+
+        /* Profile Main Wrapper */
+        .profile-container {
+            max-width: 740px;
+            margin: 0 auto;
+        }
+
+        /* Author Metadata Header */
+        .profile-card {
+            margin-bottom: 4rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 2.5rem;
+        }
+
+        .author-name {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .author-bio {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 500px;
+            margin-bottom: 1.5rem;
+        }
+
+        .author-stats {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-count {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Post Feed Section */
+        .feed-heading {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            letter-spacing: -0.2px;
+        }
+
+        .post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3.5rem; 
+        }
+
+        .post-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-bottom: 3.5rem;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .post-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-title-link {
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .post-title {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 400;
+            line-height: 1.3;
+            transition: color 0.15s;
+        }
+
+        .post-title-link:hover .post-title {
+            color: var(--text-secondary);
+        }
+
+        /* The Excerpt / Subtitle */
+        .post-excerpt {
+            color: var(--text-secondary);
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem; /* Space before the main content begins */
+            font-style: italic;
+        }
+
+        /* The Main Body Content */
+        .post-content {
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+
+        .post-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #222;
+        }
+
+        .action-link {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .action-link:hover {
+            color: var(--text-primary);
+        }
+
+        .action-delete {
+            color: #cc4444;
+        }
+
+        .action-delete:hover {
+            color: #ff6666;
+        }
+
+        /* Empty Feed State */
+        .empty-state {
+            padding: 3rem 0;
+            text-align: center;
+            border: 1px dashed var(--border-color);
+            border-radius: 4px;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="nav-header">
+        <a href="#" class="brand">Obsidian.</a>
+        <nav class="nav-links">
+            <a href="{% url 'home_page' %}" class="nav-link">Feed</a>
+            <a href="{% url 'create' %}" class="btn-new-story">Write</a>
+        </nav>
+    </header>
+
+    <main class="profile-container">
+        
+        <section class="profile-card">
+            <h1 class="author-name">{{ request.user.username }}</h1>
+            <p class="author-bio">Contributor at Obsidian Editorial. Crafting deep-dive narratives, clean structures, and minimal digital environments.</p>
+            <div class="author-stats">
+                <span>Stories: <span class="stat-count">{{ posts.count }}</span></span>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="feed-heading">Your Stories</h2>
+            
+            <div class="post-list">
+                {% for post in posts %}
+                    <article class="post-item">
+                        <div class="post-meta">{{ post.created_at|date:"M d, Y" }}</div>
+                        
+                        <a href="#" class="post-title-link">
+                            <h3 class="post-title">{{ post.title }}</h3>
+                        </a>
+                        
+                        {% if post.excerpt %}
+                            <p class="post-excerpt">{{ post.subtitle }}</p>
+                        {% endif %}
+                        
+                        <div class="post-content">
+                            {{ post.content|linebreaks|safe }}
+                        </div>
+
+                        <div class="post-actions">
+                            <a href="{% url 'edit_post' post.pk %}" class="action-link">Edit</a>
+                            <form method="post" action="{% url 'delete_blog' post.pk %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="action-link action-delete" onclick="return confirm('Are you sure you want to delete this story premanenty?');"style="background:none;border:none ;padding:0;cursor: pointer; #ff4a4a; font-family: inherit; font-size:inherit;">Delete</button>
+
+                            </form>
+                        </div>
+                    </article>
+                {% empty %}
+                    <div class="empty-state">
+                        <p>You haven't shared any stories yet.</p>
+                        <a href="#" class="btn-new-story" style="display: inline-block;">Write your first post</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>
