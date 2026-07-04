@@ -374,74 +374,390 @@
     <div class="dashboard-layout">
         
         <!-- Left Column Context: Personal Reading Stream Feed -->
-        <main class="feed-container">
-            <div class="feed-header">
-                <h1>Your Desk</h1>
-            </div>
-
-            <div class="feed-grid">
-                
-                <!-- Feed Post Item 1 -->
-                <article class="feed-card">
-                    <div class="card-meta">
-                        <span class="post-author">By Elena Vance</span>
-                        <span class="post-timestamp">2 hours ago</span>
-                    </div>
-                    <a href="#post-slug-1" class="post-title">The Typography of Isolation: Minimalism in Print</a>
-                    <p class="post-excerpt">How tracking scale and negative grid spaces force physical cognitive processing deceleration in luxury broadsheets.</p>
-                    <div class="card-footer">
-                        <div class="post-tags">
-                            <span class="tag">Typography</span>
-                            <span class="tag">Design Philosophy</span>
-                        </div>
-                        <button class="action-icon-btn" aria-label="Bookmark entry">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </article>
-
-                <!-- Feed Post Item 2 -->
-                <article class="feed-card">
-                    <div class="card-meta">
-                        <span class="post-author">By Marcus Thorne</span>
-                        <span class="post-timestamp">Yesterday</span>
-                    </div>
-                    <a href="#post-slug-2" class="post-title">Shadow Mechanics: Styling with Deep UI Levels</a>
-                    <p class="post-excerpt">Moving away from standard components toward tactile, layered environmental depth models in ambient dark modes.</p>
-                    <div class="card-footer">
-                        <div class="post-tags">
-                            <span class="tag">Interface</span>
-                            <span class="tag">Brutalism</span>
-                        </div>
-                        <button class="action-icon-btn" aria-label="Bookmark entry">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </article>
-
-            </div>
-        </main>
+       
 
         <!-- Right Side: Profile Status & Settings Panel Widget Container -->
-        <aside class="sidebar-container">
-            <div class="sidepanel-widget">
-                <span class="widget-title">Account Snapshot</span>
-                
-                <div class="panel-user-profile">
-                    <div class="panel-avatar"></div>
-                    <h2 class="panel-username">{{request.user.username}}</h2>
-                    <span class="panel-user-role">Premium Member</span>
-                </div>
-
-                <a href="#profile-settings" class="btn-panel-action">Update Profile Settings</a>
-            </div>
-        </aside>
+       
 
     </div>
 
 </body>
 </html>
+
+
+
+{% block content %}
+<div class="feed-wrapper">
+    <div class="desk-layout-grid">
+        
+        <main class="feed-column">
+            <h1 class="desk-title">Your Desk</h1>
+            
+            <div id="feed-container" class="editorial-grid">
+                {% for post in posts %}
+                    <article class="post-card">
+                        <div class="post-header">
+                            <span class="post-author">BY {{ post.author.username|default:"ANONYMOUS"|upper }}</span>
+                            <span class="post-time">{{ post.created_at|default:"2 hours ago" }}</span>
+                        </div>
+                        
+                        <h2 class="post-title">
+                            <a href="" class="title-link">{{ post.title }}</a>
+                        </h2>
+                        
+                        <p class="post-excerpt">
+                            {{ post.content|truncatewords:30 }}
+                        </p>
+                        
+                        <div class="post-footer">
+                            <div class="tags-container">
+                                <span class="tag-pill">TYPOGRAPHY</span>
+                                <span class="tag-pill">DESIGN PHILOSOPHY</span>
+                            </div>
+                            <button class="bookmark-btn" aria-label="Bookmark post">
+                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+            
+            <div id="loading-indicator" style="display: none; text-align: center; font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #71717a; padding: 3rem 0; letter-spacing: 0.1em;">
+                LOADING MORE ENTRIES...
+            </div>
+        </main>
+
+        <aside class="sidebar-column">
+            <div class="account-snapshot-card">
+                <span class="snapshot-header">ACCOUNT SNAPSHOT</span>
+                
+                <div class="avatar-wrapper">
+                    <div class="profile-avatar"></div>
+                </div>
+                
+                <h3 class="profile-username">{{ request.user.username }}</h3>
+                <span class="profile-tier">Premium Member</span>
+                
+                <a href="#" class="settings-btn">UPDATE PROFILE SETTINGS</a>
+            </div>
+        </aside>
+
+    </div>
+</div>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap');
+
+    .feed-wrapper {
+        width: 100%;
+        background-color: #0d0d0e;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+
+    /* Sets up the side-by-side display window */
+    .desk-layout-grid {
+        max-width: 1100px; /* Wider limit to accommodate two clean columns side-by-side */
+        margin: 0 auto;
+        padding: 4rem 2rem;
+        display: grid;
+        grid-template-columns: 1fr 320px; /* Left takes remaining space, right is pinned at 320px */
+        gap: 3.5rem;
+        align-items: start;
+    }
+    
+    .desk-title {
+        font-family: "Playfair Display", "Georgia", serif;
+        font-size: 2.2rem;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        margin-bottom: 2.5rem;
+        color: #ffffff;
+        margin-top: 0;
+    }
+    
+    .editorial-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+    
+    /* Post Card Layout Styling */
+    .post-card {
+        background-color: #161618;
+        border: 1px solid #27272a;
+        border-radius: 6px;
+        padding: 1.5rem 1.75rem;
+        display: flex;
+        flex-direction: column;
+        transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+    
+    .post-card:hover {
+        border-color: #3f3f46;
+        background-color: #1a1a1c;
+    }
+    
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.85rem;
+    }
+    
+    .post-author {
+        font-family: "Inter", sans-serif;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #d97706;
+        letter-spacing: 0.05em;
+    }
+    
+    .post-time {
+        font-family: "Inter", sans-serif;
+        font-size: 0.72rem;
+        color: #71717a;
+    }
+    
+    .post-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.55rem;
+        font-weight: 600;
+        line-height: 1.3;
+        margin: 0 0 0.6rem 0;
+    }
+    
+    .title-link {
+        color: #ffffff;
+        text-decoration: none;
+    }
+    
+    .title-link:hover {
+        text-decoration: underline;
+    }
+    
+    .post-excerpt {
+        font-family: "Inter", sans-serif;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #a1a1aa;
+        margin: 0 0 1.25rem 0;
+    }
+    
+    .post-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+    }
+    
+    .tags-container {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .tag-pill {
+        font-family: "Inter", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 500;
+        color: #a1a1aa;
+        background-color: #242427;
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        letter-spacing: 0.02em;
+    }
+    
+    .bookmark-btn {
+        background: transparent;
+        border: none;
+        color: #71717a;
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s ease;
+    }
+    
+    .bookmark-btn:hover {
+        color: #ffffff;
+    }
+
+    /* RIGHT COLUMN: Account Snapshot Layout Styling */
+    .sidebar-column {
+        position: sticky;
+        top: 2rem; /* Pins snapshot container to screen view during infinite scroll */
+    }
+
+    .account-snapshot-card {
+        background-color: #161618;
+        border: 1px solid #27272a;
+        border-radius: 6px;
+        padding: 1.75rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .snapshot-header {
+        font-family: "Inter", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: #71717a;
+        letter-spacing: 0.08em;
+        margin-bottom: 1.5rem;
+        align-self: flex-start;
+    }
+
+    .avatar-wrapper {
+        margin-bottom: 1rem;
+    }
+
+    .profile-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background-color: #a78bfa; /* Lavender tint avatar from image placeholder */
+    }
+
+    .profile-username {
+        font-family: "Inter", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin: 0 0 0.25rem 0;
+    }
+
+    .profile-tier {
+        font-family: "Inter", sans-serif;
+        font-size: 0.75rem;
+        color: #d97706;
+        margin-bottom: 1.75rem;
+    }
+
+    .settings-btn {
+        width: 100%;
+        display: block;
+        box-sizing: border-box;
+        border: 1px solid #27272a;
+        background-color: transparent;
+        color: #ffffff;
+        text-decoration: none;
+        font-family: "Inter", sans-serif;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        padding: 0.75rem;
+        border-radius: 4px;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .settings-btn:hover {
+        background-color: #242427;
+        border-color: #3f3f46;
+    }
+
+    /* Responsive adjustments for narrow screens */
+    @media (max-width: 850px) {
+        .desk-layout-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 2rem 1rem;
+        }
+        .sidebar-column {
+            position: relative;
+            top: 0;
+            order: -1; /* Puts account snapshot first on mobile layout */
+        }
+    }
+</style>
+
+<script>
+    let currentPage = 1;
+    let hasNext = true;
+    let isLoading = false;
+    
+    const container = document.getElementById('feed-container');
+    const loadingIndicator = document.getElementById('loading-indicator');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !isLoading && hasNext) {
+                observer.unobserve(entry.target); 
+                loadMorePosts();
+            }
+        });
+    }, { rootMargin: '0px 0px 300px 0px' }); 
+
+    function updateTrigger() {
+        const cards = container.querySelectorAll('.post-card');
+        if (cards.length >= 8) {
+            const targetIndex = cards.length - 3; 
+            observer.observe(cards[targetIndex]);
+        } else if (cards.length > 0) {
+            observer.observe(cards[cards.length - 1]);
+        }
+    }
+
+    function loadMorePosts() {
+        isLoading = true;
+        loadingIndicator.style.display = 'block';
+        currentPage++;
+
+        fetch(`?page=${currentPage}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("JSON payload error");
+            return response.json();
+        })
+        .then(data => {
+            hasNext = data.has_next;
+            
+            data.posts.forEach(post => {
+                const card = document.createElement('article');
+                card.className = 'post-card';
+                
+                const authorName = post.author ? post.author.toUpperCase() : "ANONYMOUS";
+                const timestamp = post.created_at ? post.created_at : "Recently";
+
+                card.innerHTML = `
+                    <div class="post-header">
+                        <span class="post-author">BY ${authorName}</span>
+                        <span class="post-time">${timestamp}</span>
+                    </div>
+                    <h2 class="post-title">
+                        <a href="/post/${post.id}" class="title-link">${post.title}</a>
+                    </h2>
+                    <p class="post-excerpt">${post.content}</p>
+                    <div class="post-footer">
+                        <div class="tags-container">
+                            <span class="tag-pill">TYPOGRAPHY</span>
+                            <span class="tag-pill">DESIGN PHILOSOPHY</span>
+                        </div>
+                        <button class="bookmark-btn" aria-label="Bookmark post">
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            isLoading = false;
+            loadingIndicator.style.display = 'none';
+            
+            if (hasNext) updateTrigger();
+        })
+        .catch(err => {
+            console.error("Layout stream collection updated catch intercept:", err);
+            isLoading = false;
+            loadingIndicator.style.display = 'none';
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", updateTrigger);
+</script>
+{% endblock %}
