@@ -3,11 +3,11 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Install your dependencies
-python3 -m pip install -r requirements.txt
+# Install dependencies bypassing the externally-managed environment restriction
+python3 -m pip install -r requirements.txt --break-system-packages
 
-# Run your database migrations so 'auth_user' is created
+# Run database migrations
 python3 manage.py migrate --noinput
 
-# Collect static files so your CSS/JS loads correctly
+# Collect static files
 python3 manage.py collectstatic --noinput --clear
