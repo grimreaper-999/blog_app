@@ -679,32 +679,31 @@
     let currentPage = 1;
     let hasNext = true;
     let isLoading = false;
-    
+
     const container = document.getElementById('feed-container');
     const loadingIndicator = document.getElementById('loading-indicator');
 
+    // 1. Setup the observer to watch the loading indicator at the bottom
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
+            // If the loader comes into view (plus the 300px margin), fetch more
             if (entry.isIntersecting && !isLoading && hasNext) {
-                observer.unobserve(entry.target); 
                 loadMorePosts();
             }
         });
-    }, { rootMargin: '0px 0px 300px 0px' }); 
+    }, { rootMargin: '0px 0px 300px 0px' });
 
-    function updateTrigger() {
-        const cards = container.querySelectorAll('.post-card');
-        if (cards.length >= 8) {
-            const targetIndex = cards.length - 3; 
-            observer.observe(cards[targetIndex]);
-        } else if (cards.length > 0) {
-            observer.observe(cards[cards.length - 1]);
-        }
+    // Start watching the loading indicator immediately on load
+    if (loadingIndicator) {
+        observer.observe(loadingIndicator);
     }
 
+    // 2. Core fetch function
     function loadMorePosts() {
         isLoading = true;
-        loadingIndicator.style.display = 'block';
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'block';
+        }
         currentPage++;
 
         fetch(`?page=${currentPage}`, {
@@ -716,11 +715,12 @@
         })
         .then(data => {
             hasNext = data.has_next;
-            
+
+            // Loop through and append new posts
             data.posts.forEach(post => {
                 const card = document.createElement('article');
                 card.className = 'post-card';
-                
+
                 const authorName = post.author ? post.author.toUpperCase() : "ANONYMOUS";
                 const timestamp = post.created_at ? post.created_at : "Recently";
 
@@ -739,25 +739,33 @@
                             <span class="tag-pill">DESIGN PHILOSOPHY</span>
                         </div>
                         <button class="bookmark-btn" aria-label="Bookmark post">
-                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                            </svg>
                         </button>
                     </div>
                 `;
                 container.appendChild(card);
             });
 
+            // Turn off loading states
             isLoading = false;
-            loadingIndicator.style.display = 'none';
-            
-            if (hasNext) updateTrigger();
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+
+            // If there are no more pages, stop observing the indicator entirely
+            if (!hasNext && loadingIndicator) {
+                observer.unobserve(loadingIndicator);
+            }
         })
         .catch(err => {
             console.error("Layout stream collection updated catch intercept:", err);
             isLoading = false;
-            loadingIndicator.style.display = 'none';
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
         });
     }
-
-    document.addEventListener("DOMContentLoaded", updateTrigger);
 </script>
 {% endblock %}
