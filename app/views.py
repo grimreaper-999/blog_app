@@ -7,24 +7,36 @@ from .models import Blog
 @login_required
 def home(view):
     request=view
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+    is_ajax=(
+        request.GET.get('ajax') =='1' or
+        request.headers.get('X-Requested-With') == 'XMLHttpRequest' or
+        request.META.get('HTTP_X_REQUESTED_WITH')== 'XMLHttpRequest'
+    )
+    if is_ajax:
         page= int(request.GET.get('page',1))
         per_page=10
         shuffled_ids =request.session.get('feed_ids',[])
+        # print(f'fetching page{page}')
+        # print(f'ids :{shuffled_ids}')
         start= (page-1)*per_page
         end=start + per_page
         batch_ids =shuffled_ids[start:end]
         posts = Blog.objects.filter(id__in= batch_ids)
         posts_by_id ={post.id:post for post in posts}
         ordered_posts = [posts_by_id[pid] for pid in batch_ids if pid in posts_by_id]
+        for post in ordered_posts:
+            author_str =post.author.username if post.author else "Annonymous"
+            date_str =post.created_at.strftime('%b %d ,%Y') if post.created_at else 'Recently'
+
+        
 
         data =[{
             'id': post.id,
             'title':post.title,
-            'subtitle':post.subtitle,
+            'subtitle':post.subtitle if post.subtitle else '',
             'content':post.content,
-            'author': post.author,
-            'date':post.created_at,
+            'author': author_str,
+            'date':date_str,
 
         }for post in ordered_posts]
         return JsonResponse({'posts':data ,'has_next':end < len(shuffled_ids)})

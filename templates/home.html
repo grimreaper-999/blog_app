@@ -424,8 +424,8 @@
                 {% endfor %}
             </div>
             
-            <div id="loading-indicator" style="display: none; text-align: center; font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #71717a; padding: 3rem 0; letter-spacing: 0.1em;">
-                LOADING MORE ENTRIES...
+            <div id="loading-indicator" style="text-align: center; font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #71717a; padding: 3rem 0; letter-spacing: 0.1em;">
+              <span> LOADING MORE ENTRIES...</span> 
             </div>
         </main>
 
@@ -683,22 +683,21 @@
     const container = document.getElementById('feed-container');
     const loadingIndicator = document.getElementById('loading-indicator');
 
-    // 1. Setup the observer to watch the loading indicator at the bottom
+    // Create the observer to watch the sentinel loading indicator div
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            // If the loader comes into view (plus the 300px margin), fetch more
+            // Trigger when the loading indicator scrolls into view
             if (entry.isIntersecting && !isLoading && hasNext) {
                 loadMorePosts();
             }
         });
     }, { rootMargin: '0px 0px 300px 0px' });
 
-    // Start watching the loading indicator immediately on load
+    // Start tracking the sentinel immediately
     if (loadingIndicator) {
         observer.observe(loadingIndicator);
     }
 
-    // 2. Core fetch function
     function loadMorePosts() {
         isLoading = true;
         if (loadingIndicator) {
@@ -706,7 +705,8 @@
         }
         currentPage++;
 
-        fetch(`?page=${currentPage}`, {
+        // Absolute path with explicit parameter prevents router interception
+        fetch(`/home/?page=${currentPage}&ajax=1`, {
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(response => {
@@ -716,13 +716,13 @@
         .then(data => {
             hasNext = data.has_next;
 
-            // Loop through and append new posts
+            // Loop through and build new articles dynamically
             data.posts.forEach(post => {
                 const card = document.createElement('article');
                 card.className = 'post-card';
 
                 const authorName = post.author ? post.author.toUpperCase() : "ANONYMOUS";
-                const timestamp = post.created_at ? post.created_at : "Recently";
+                const timestamp = post.date ? post.date : "Recently";
 
                 card.innerHTML = `
                     <div class="post-header">
@@ -748,13 +748,12 @@
                 container.appendChild(card);
             });
 
-            // Turn off loading states
             isLoading = false;
             if (loadingIndicator) {
                 loadingIndicator.style.display = 'none';
             }
 
-            // If there are no more pages, stop observing the indicator entirely
+            // Unobserve if there are no more items left in pagination
             if (!hasNext && loadingIndicator) {
                 observer.unobserve(loadingIndicator);
             }
