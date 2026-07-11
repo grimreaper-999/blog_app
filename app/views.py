@@ -7,7 +7,7 @@ from .models import Blog
 @login_required
 def home(view):
     request=view
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         page= int(request.GET.get('page',1))
         per_page=10
         shuffled_ids =request.session.get('feed_ids',[])
@@ -39,7 +39,6 @@ def home(view):
         inittial_posts =[posts_by_id[pid] for pid in initial_ids if pid in posts_by_id]
         return render(request,'home.html' ,{'posts': inittial_posts})
 
-    return render(request,'home.html')
 @login_required
 def create(request):
     if request.method =="POST":
